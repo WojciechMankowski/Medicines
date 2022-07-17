@@ -8,7 +8,7 @@ const form = document.querySelector("form");
 const formMessage = form.querySelector(".form-message");
 
 const validText = (field, lenght) => {
-  return field.value >= lenght;
+  return  field.value.length >= lenght ;
 };
 const validEmail = (field) => {
   const reg =
@@ -23,60 +23,31 @@ const validPassword = (field, field2) => {
     field.value != field2.value
   );
 };
-function markFieldAsError(field, show) {
-  if (show) {
-    field.classList.add("field-error");
-  } else {
-    field.classList.remove("field-error");
+const validForms = e => {
+  e.preventDefault();
+  let formErrors = []
+
+  if (!validText(input_nameuser, 8)){
+    formErrors.push("Nazwa użytkownika jest za krótka")
   }
+  if (!validEmail(input_email)){
+    formErrors.push("Email jest nieprawidłowy")
+  }
+  if (!validPassword(input_password, input_password2)){
+    formErrors.push("Hasła nie są takie same")
+  }
+  if (formErrors.length != 0){
+    const ul = document.createElement("ul");
+    for (let i = 0; i < formErrors.length; i++){
+      const li = document.createElement("li");
+      li.innerHTML = formErrors[i];
+      ul.appendChild(li);
+    }
+    formMessage.appendChild(ul);
+
+  }
+
 }
 
-input_nameuser.addEventListener("input", (e) =>
-  markFieldAsError(e.target, validText(input_nameuser, 8))
-);
-input_email.addEventListener("input", (e) =>
-  markFieldAsError(e.target, validEmail(input_email))
-);
-input_password.addEventListener("input", (e) =>
-  markFieldAsError(e.target, validPassword(input_password, input_password2))
-);
-input_password2.addEventListener("input", (e) =>
-  markFieldAsError(e.target, validPassword(input_password, input_password2))
-);
-
-const validForms = (e) => {
-  e.preventDefault();
-  console.log("walidacja");
-
-  let formErrors = [];
-
-  const fields = [input_email, input_nameuser, input_password, input_password2];
-
-  for (const element of fields) {
-    markFieldAsError(element, false);
-  }
-  if (!validText(input_nameuser, 8)) {
-    markFieldAsError(input_nameuser, true);
-    formErrors.push("Wypełnij poprawnie pole z nazwą użytkownika");
-  }
-  if (!validEmail(input_email)) {
-    markFieldAsError(input_email, true);
-    formErrors.push("Wypełnij poprawnie pole z e-mailem");
-  }
-  if (!validPassword(input_password, input_password2)) {
-    markFieldAsError(input_password, true);
-    formErrors.push("Wypełnij poprawnie pole z hasłami");
-  }
-
-  if (!formErrors.length) {
-    form.submit();
-  } else {
-    formMessage.innerHTML = `
-        <h3 class="form-error-title">Przed wysłaniem formularza proszę poprawić błędy:</h3>
-        <ul class="form-error-list">
-            ${formErrors.map((el) => `<li>${el}</li>`).join("")}
-        </ul>
-    `;
-  }
-};
 form.addEventListener("submit", validForms);
+
