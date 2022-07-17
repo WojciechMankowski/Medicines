@@ -1,23 +1,35 @@
 from datetime import date
 from typing import Union
 from fastapi import FastAPI
-
+from fastapi.middleware.cors import CORSMiddleware
 from database import DB
 from models import User, Dugs
 # TODO polecenia uruchamiania API uvicorn main:app --reload
 
 app = FastAPI()
 
+origins = ["*"]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
 @app.get("/user")
 def getalluser():
     db = DB("pharmacyinhome.db")
     user_all = db.takeidfromdatabase("user")
     return user_all
+
 @app.get("/dugs")
 def getAllDugs():
     db = DB("pharmacyinhome.db")
     dug_all = db.takeidfromdatabase("dugs")
     return dug_all
+    
 @app.post("/adduser/{nameuser}")
 def adduser(nameuser: str, email: str, password: str):
     db = DB("pharmacyinhome.db")

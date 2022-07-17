@@ -58,8 +58,9 @@ class DB:
         if nametable == "user":
             for item in res:
                 print(len(item))
+                print(item)
                 collections.append(User(id_user=item[0],
-                    nameuser= item[1], email=item[3], password=item[4]))
+                    nameuser= item[1], email=item[2], password=item[3]))
         elif nametable == "dugs":
             for item in res:
                 collections.append(Dugs(
@@ -85,9 +86,9 @@ class DB:
 
 if __name__ == '__main__':
     db = DB("")
-    # db.creattable()
-    # number_id = db.take_id("user") + 1
-    # db.add_value("user",number_id ,"wojtek", "wojtekm510@gmail.com", "Wojtek92!")
+    db.creattable()
+    number_id = db.take_id("user") + 1
+    db.add_value("user",number_id ,"wojtek", "wojtekm510@gmail.com", "Wojtek92!")
     # print(db.takeid_user("wojtek"))
-    db.takeidfromdatabase("dugs")
+    db.takeidfromdatabase("user")
 

@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from datetime import datetime, date
 from pydantic import BaseModel
-@dataclass
+    
 class User(BaseModel):
     id_user: int
     nameuser: str
